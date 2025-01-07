@@ -34,7 +34,7 @@ data "aws_iam_role" "labrole" {
 }
 
 #definición de la tarea de ecs
-resource "aws_ecs_task_definition" "apache_tarea" {
+/* resource "aws_ecs_task_definition" "apache_tarea" {
 
   #familia a la que pertenece la tarea
   family = "apache-tarea"
@@ -99,6 +99,94 @@ resource "aws_ecs_task_definition" "apache_tarea" {
     }
   ]
 TASK_DEFINITION
+} */
+
+resource "aws_ecs_task_definition" "jsonServer_tarea" {
+
+  #familia a la que pertenece la tarea
+  family = "apache-tarea"
+
+  execution_role_arn = data.aws_iam_role.labrole.arn
+  task_role_arn      = data.aws_iam_role.labrole.arn
+
+  # Modo de red para Fargate
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+
+  # Recursos a nivel de la tarea
+  cpu    = "512"
+  memory = "1024" 
+
+  container_definitions = <<TASK_DEFINITION
+  [
+    {
+      "cpu": 512,
+      "environment": [
+        {"name": "VARNAME", "value": "VARVAL"}
+      ],
+      "essential": true,
+      "image": "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.ecr}:img-jsonserver",
+      "memory": 1024,
+      "name": "json-api-container",
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "hostPort": 3000,
+          "protocol": "tcp"
+        },
+        {
+          "containerPort": 3001,
+          "hostPort": 3001,
+          "protocol": "tcp"
+        },
+        {
+          "containerPort": 3002,
+          "hostPort": 3002,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  ]
+TASK_DEFINITION
+}
+
+resource "aws_ecs_task_definition" "apache_tarea" {
+
+  #familia a la que pertenece la tarea
+  family = "apache-tarea"
+
+  execution_role_arn = data.aws_iam_role.labrole.arn
+  task_role_arn      = data.aws_iam_role.labrole.arn
+
+  # Modo de red para Fargate
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+
+  # Recursos a nivel de la tarea
+  cpu    = "512"
+  memory = "1024" 
+
+  container_definitions = <<TASK_DEFINITION
+  [
+    {
+      "cpu": 512,
+      "environment": [
+        {"name": "VARNAME", "value": "VARVAL"}
+      ],
+      "essential": true,
+      "image": "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.ecr}:img-apachenodenpm",
+      "memory": 1024,
+      "name": "apache-container",
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  ]
+TASK_DEFINITION
 
 }
 
@@ -111,7 +199,7 @@ resource "aws_ecs_cluster" "cluster" {
 
 #el servicio es donde debes asociar el Load Balancer con el servicio ECS para que las tareas puedan recibir tráfico a través de él.
 #este sera el servicio para los contenedores
-resource "aws_ecs_service" "servicio" {
+/* resource "aws_ecs_service" "servicio" {
   name            = "servicio"
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.apache_tarea.arn
@@ -122,6 +210,36 @@ resource "aws_ecs_service" "servicio" {
     subnets          = [aws_subnet.subred-publica.id]       #ponemos el servicio de la pagina en la subred publica
     security_groups  = [aws_security_group.security.id] #ponemos el grupo de seguridad de las ecs que no permiten entrada desde internet
     assign_public_ip = true                                #para que asigne una ip publica
+  }
+} */
+
+# Servicio para Apache
+resource "aws_ecs_service" "apache_service" {
+  name            = "apache-service"
+  cluster         = aws_ecs_cluster.cluster.id
+  task_definition = aws_ecs_task_definition.apache_tarea.arn
+  desired_count   = 1
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets          = [aws_subnet.subred-publica.id]
+    security_groups  = [aws_security_group.security.id]
+    assign_public_ip = true
+  }
+}
+
+# Servicio para JSON Server
+resource "aws_ecs_service" "json_service" {
+  name            = "json-server-service"
+  cluster         = aws_ecs_cluster.cluster.id
+  task_definition = aws_ecs_task_definition.jsonServer_tarea.arn
+  desired_count   = 1
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets          = [aws_subnet.subred-publica.id]
+    security_groups  = [aws_security_group.security.id]
+    assign_public_ip = false  # No es necesario asignar IP pública si solo es accesible internamente
   }
 }
 
