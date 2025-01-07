@@ -1,8 +1,6 @@
 #!/bin/bash
-# Ejecutar json-server para cada archivo JSON en diferentes puertos
-json-server --watch /usr/src/app/api-data/usuarios.json --port 3000 &
-json-server --watch /usr/src/app/api-data/ales.json --port 3001 &
-json-server --watch /usr/src/app/api-data/stouts.json --port 3002 &
+# Ejecutar json-server para el archivo JSON
+json-server --watch /usr/src/app/api-data/db.json --port 3000
 
 # Esperar a que los procesos terminen
 wait

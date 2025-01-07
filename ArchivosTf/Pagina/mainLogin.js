@@ -6,7 +6,8 @@
  */
 function getFetchUsuarios(){
 
-    return fetch('http://localhost:3000/Usuarios')
+    //'http://localhost:3000/Usuarios'
+    return fetch('http://json_service:3000/Usuarios')
     .then((result) => result.json())
     .catch((error) => {
         console.error("Error al realizar la solicitud: ", error);

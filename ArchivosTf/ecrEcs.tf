@@ -103,6 +103,8 @@ TASK_DEFINITION
 
 resource "aws_ecs_task_definition" "jsonServer_tarea" {
 
+  depends_on = [null_resource.crear-y-subir-imagenes]
+
   #familia a la que pertenece la tarea
   family = "apache-tarea"
 
@@ -151,6 +153,8 @@ TASK_DEFINITION
 }
 
 resource "aws_ecs_task_definition" "apache_tarea" {
+
+  depends_on = [null_resource.crear-y-subir-imagenes]
 
   #familia a la que pertenece la tarea
   family = "apache-tarea"
