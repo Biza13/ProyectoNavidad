@@ -23,7 +23,7 @@ resource "aws_security_group" "security" {
 
   ingress {
   from_port = 3000
-  to_port = 3002  #desde el 3000 al 3002
+  to_port = 3000
   protocol = "tcp"
   cidr_blocks = ["0.0.0.0/0"]
 }
