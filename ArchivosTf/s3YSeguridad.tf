@@ -1,22 +1,31 @@
 
 #--------------------GRUPO SEGURIDAD--------------------
 #crear un grupo de seguridad para ssh y http/https
-resource "aws_security_group" "security_ecs" {
+resource "aws_security_group" "security" {
   name = "seguridad"
-  description = "Security group para las ecs contenedores" #que al estar en una subred privada no recibiran trafico desde internet
-  vpc_id      = aws_vpc.Desarrollo-web-VPC.id 
+  description = "Security group para permitir SSH y HTTP/HTTPS"
+  vpc_id      = aws_vpc.Desarrollo-web-VPC.id  # Asegúrate de que esto apunte a la VPC correcta
 
   # ingres reglas de entrada
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol="tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   ingress {
     from_port = 80
     to_port = 80
     protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
   
   #egress reglas de salida
@@ -24,7 +33,7 @@ resource "aws_security_group" "security_ecs" {
     from_port = 0
     to_port = 0
     protocol = "-1"
-    cidr_blocks = ["0.0.0.0/0"] #permitir que los contenedores salgan a Internet a través de la NAT Gateway
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 

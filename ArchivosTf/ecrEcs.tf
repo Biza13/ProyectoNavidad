@@ -9,7 +9,7 @@ resource "aws_ecr_repository" "repositorio_ecr" {
 }
 
 #recurso para hacer el build y el push de las imagenes al repositorio ecr
-resource "null_resource" "build_and_push_images" {
+resource "null_resource" "crear-y-subir-imagenes" {
   depends_on = [aws_ecr_repository.repositorio_ecr]
 
   provisioner "local-exec" {
@@ -116,8 +116,8 @@ resource "aws_ecs_service" "apache_service" {
 
   network_configuration {
     subnets          = [aws_subnet.subred-publica.id]       #ponemos el servicio de la pagina en la subred publica
-    security_groups  = [aws_security_group.security_ecs.id] #ponemos el grupo de seguridad de las ecs que no permiten entrada desde internet
-    assign_public_ip = false                                #para que no asigne una ip publica
+    security_groups  = [aws_security_group.security.id] #ponemos el grupo de seguridad de las ecs que no permiten entrada desde internet
+    assign_public_ip = true                                #para que asigne una ip publica
   }
 }
 
@@ -131,8 +131,8 @@ resource "aws_ecs_service" "json_server_service_3000" {
 
   network_configuration {
     subnets          = [aws_subnet.subred-publica.id]       #ponemos el servicio de los json en la subred publica
-    security_groups  = [aws_security_group.security_ecs.id] #ponemos el grupo de seguridad de las ecs que no permiten entrada desde internet
-    assign_public_ip = false                                #para que no asigne una ip publica
+    security_groups  = [aws_security_group.security.id] #ponemos el grupo de seguridad de las ecs que no permiten entrada desde internet
+    assign_public_ip = true                                #para que asigne una ip publica
   }
 }
 
@@ -146,8 +146,8 @@ resource "aws_ecs_service" "json_server_service_3001" {
 
   network_configuration {
     subnets          = [aws_subnet.subred-publica.id]       #ponemos el servicio de los json en la subred publica
-    security_groups  = [aws_security_group.security_ecs.id] #ponemos el grupo de seguridad de las ecs que no permiten entrada desde internet
-    assign_public_ip = false                                #para que no asigne una ip publica
+    security_groups  = [aws_security_group.security.id] #ponemos el grupo de seguridad de las ecs que no permiten entrada desde internet
+    assign_public_ip = true                                #para que asigne una ip publica
   }
 }
 
@@ -161,8 +161,8 @@ resource "aws_ecs_service" "json_server_service_3002" {
 
   network_configuration {
     subnets          = [aws_subnet.subred-publica.id]       #ponemos el servicio de los json en la subred publica
-    security_groups  = [aws_security_group.security_ecs.id] #ponemos el grupo de seguridad de las ecs que no permiten entrada desde internet
-    assign_public_ip = false                                #para que no asigne una ip publica
+    security_groups  = [aws_security_group.security.id] #ponemos el grupo de seguridad de las ecs que no permiten entrada desde internet
+    assign_public_ip = true                                #para que asigne una ip publica
   }
 }
 
