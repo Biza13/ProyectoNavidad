@@ -110,9 +110,9 @@ resource "aws_ecs_cluster" "cluster" {
 #--------------------SERVICIOS--------------------
 
 #el servicio es donde debes asociar el Load Balancer con el servicio ECS para que las tareas puedan recibir tráfico a través de él.
-#este sera el servicio para el contenedor de la pagina
-resource "aws_ecs_service" "apache_service" {
-  name            = "apache-service"
+#este sera el servicio para los contenedores
+resource "aws_ecs_service" "servicio" {
+  name            = "servicio"
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.apache_tarea.arn
   desired_count   = 1
@@ -120,51 +120,6 @@ resource "aws_ecs_service" "apache_service" {
 
   network_configuration {
     subnets          = [aws_subnet.subred-publica.id]       #ponemos el servicio de la pagina en la subred publica
-    security_groups  = [aws_security_group.security.id] #ponemos el grupo de seguridad de las ecs que no permiten entrada desde internet
-    assign_public_ip = true                                #para que asigne una ip publica
-  }
-}
-
-#Este sera el servicio para el contenedor json server puerto usuarios.json
-resource "aws_ecs_service" "json_server_service_3000" {
-  name            = "json-server-service_3000"
-  cluster         = aws_ecs_cluster.cluster.id
-  task_definition = aws_ecs_task_definition.apache_tarea.arn
-  desired_count   = 1
-  launch_type     = "FARGATE"
-
-  network_configuration {
-    subnets          = [aws_subnet.subred-publica.id]       #ponemos el servicio de los json en la subred publica
-    security_groups  = [aws_security_group.security.id] #ponemos el grupo de seguridad de las ecs que no permiten entrada desde internet
-    assign_public_ip = true                                #para que asigne una ip publica
-  }
-}
-
-#Este sera el servicio para el contenedor json server puerto ales.json
-resource "aws_ecs_service" "json_server_service_3001" {
-  name            = "json-server-service-3001"
-  cluster         = aws_ecs_cluster.cluster.id
-  task_definition = aws_ecs_task_definition.apache_tarea.arn
-  desired_count   = 1
-  launch_type     = "FARGATE"
-
-  network_configuration {
-    subnets          = [aws_subnet.subred-publica.id]       #ponemos el servicio de los json en la subred publica
-    security_groups  = [aws_security_group.security.id] #ponemos el grupo de seguridad de las ecs que no permiten entrada desde internet
-    assign_public_ip = true                                #para que asigne una ip publica
-  }
-}
-
-#Este sera el servicio para el contenedor json server puerto stouts.json
-resource "aws_ecs_service" "json_server_service_3002" {
-  name            = "json-server-service-3002"
-  cluster         = aws_ecs_cluster.cluster.id
-  task_definition = aws_ecs_task_definition.apache_tarea.arn
-  desired_count   = 1
-  launch_type     = "FARGATE"
-
-  network_configuration {
-    subnets          = [aws_subnet.subred-publica.id]       #ponemos el servicio de los json en la subred publica
     security_groups  = [aws_security_group.security.id] #ponemos el grupo de seguridad de las ecs que no permiten entrada desde internet
     assign_public_ip = true                                #para que asigne una ip publica
   }
