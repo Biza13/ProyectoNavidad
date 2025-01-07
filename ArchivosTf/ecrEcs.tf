@@ -64,6 +64,7 @@ resource "aws_ecs_task_definition" "apache_tarea" {
       "portMappings": [
         {
           "containerPort": 80,
+          "hostPort": 80,
           "protocol": "tcp"
         }
       ]
@@ -81,14 +82,17 @@ resource "aws_ecs_task_definition" "apache_tarea" {
       "portMappings": [
         {
           "containerPort": 3000,
+          "hostPort": 3000,
           "protocol": "tcp"
         },
         {
           "containerPort": 3001,
+          "hostPort": 3001,
           "protocol": "tcp"
         },
         {
           "containerPort": 3002,
+          "hostPort": 3002,
           "protocol": "tcp"
         }
       ]

@@ -545,4 +545,265 @@ nav ul li:hover .stouts{
 }
 
 /*--------------------Responsive--------------------*/
-/*@media
+/*--------------------tablet--------------------*/
+
+@media (max-width: 1024px){
+    /*cabecera*/
+    .cabecera__titulo{
+        max-height: 150px;
+        text-align: center;
+        display: block;
+    }
+
+    header{
+        width: 100%;
+        height: 150px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+    }
+
+    .cabecera__duffmanA{
+        max-height: 150px;
+        animation: mover 1s linear infinite;
+    }
+    
+    .cabecera__duffman{
+        max-height: 150px;
+        animation: moverA 1s linear infinite;
+    }
+    
+    @keyframes moverA {
+        0% {
+            transform: translateX(350px);
+        }
+        50% {
+            transform: translateX(300px);
+        }
+        100% {
+            transform: translateX(350px);
+        }
+    }
+    
+    @keyframes mover {
+        0% {
+            transform: translateX(-350px);
+        }
+        50% {
+            transform: translateX(-300px);
+        }
+        100% {
+            transform: translateX(-350px);
+        }
+    }
+    /*fin cabecera*/
+
+    /*Pagina del login*/
+    #login .contenedora h1{
+        text-align: center;
+        font-size: 2.5em;
+    }
+
+    #login .label{
+        margin: 1em auto;
+        width: 40%;
+        height: 3em;
+        background-color: rgb(75, 75, 75);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+        font-family: var(--fuente-principal);
+        text-align: center;
+        padding: 0.5em;
+    }
+
+    #login .cont {
+        margin: 0 5px;
+    }
+
+    #login .nombre {
+        margin: 0 5px;
+    }
+
+    #login .contenedora__formulario__boton {
+        margin: 0 5px;
+    }
+
+    #login #formulario{
+        width: 100%;
+        height: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #login .contenedora__divSeguridad{
+        margin-bottom: 30px;
+    }
+
+    #login .contenedora__divSeguridad #redirigir{
+        margin: 15px 0;
+    }
+
+    #login .contenedora__galeria h3{
+        font-size: 2em;
+    }
+    /*fin Pagina del login*/
+
+    /*Pagina cervezas*/
+    #contenedora{
+        margin: 50px 50px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+    /*fin pagina cervezas*/
+}
+/*--------------------fin tablet--------------------*/
+
+/*--------------------movil--------------------*/
+
+@media (max-width: 576px){
+    /*cabecera*/
+    .cabecera__titulo{
+        max-height: 90px;
+        text-align: center;
+        display: block;
+    }
+
+    header{
+        width: 100%;
+        height: 100px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+    }
+
+    .cabecera__duffmanA{
+        max-height: 100px;
+        animation: mover 1s linear infinite;
+    }
+    
+    .cabecera__duffman{
+        max-height: 100px;
+        animation: moverA 1s linear infinite;
+    }
+    
+    @keyframes moverA {
+        0% {
+            transform: translateX(210px);
+        }
+        50% {
+            transform: translateX(160px);
+        }
+        100% {
+            transform: translateX(210px);
+        }
+    }
+    
+    @keyframes mover {
+        0% {
+            transform: translateX(-210px);
+        }
+        50% {
+            transform: translateX(-160px);
+        }
+        100% {
+            transform: translateX(-210px);
+        }
+    }
+    /*fin cabecera*/
+
+    /*pagina login*/
+    #login .contenedora h1{
+        text-align: center;
+        font-size: 1.8em;
+    }
+
+    #login .label{
+        margin: 1em auto;
+        width: 40%;
+        height: 3em;
+        background-color: rgb(75, 75, 75);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+        font-family: var(--fuente-principal);
+    }
+
+    #login .contenedora__formulario{
+        width: 100%;
+        text-align: center;
+    }
+
+    #login #formulario{
+        width: 100%;
+        height: 80px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+        justify-items: center;
+        align-items: center;
+    }
+
+    #login #formulario .nombre{
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #login #formulario .cont{
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #login .contenedora__divSeguridad{
+        margin-bottom: 30px;
+    }
+
+    #login .contenedora__divSeguridad #redirigir{
+        margin: 15px 0;
+    }
+
+    #login .contenedora__galeria h3{
+        font-size: 1.5em;
+        text-align: center;
+    }
+    /*fin pagina login*/
+
+    /*Pagina cervezas*/
+    .cervezas nav ul li{
+        width: 20%;
+    }
+
+    #cervezas__filtro{
+        text-align: center;
+    }
+
+    #cervezas__filtro #filtrar{
+        width: 15%;
+        margin-top: 15px;
+    }
+
+    #carrito{
+        position: static;
+        width: 20%;
+    }
+
+    #contenedora{
+        margin: 50px 50px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    /*fin pagina cervezas*/
+}
+/*--------------------fin tablet--------------------*/
