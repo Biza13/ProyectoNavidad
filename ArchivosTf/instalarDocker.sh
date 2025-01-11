@@ -1,6 +1,5 @@
 #!/bin/bash
 sudo apt update -y
-sudo apt install docker -y
 sudo apt install -y docker.io
 sudo systemctl enable docker
 sudo apt install  git -y
