@@ -113,10 +113,9 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: "us-east-1" 
 
-      - name: Verificar los outputs del job de despliegue
+      - name: Verificar credenciales de AWS
         run: |
-          echo "instance_public_ip=${{ needs.despliegue.outputs.instance_public_ip }}"
-          echo "ecr_repository_uri_url=${{ needs.despliegue.outputs.ecr_repository_uri_url }}"
+          aws sts get-caller-identity
     
       - name: Crear archivo private key
         run: |
