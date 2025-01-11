@@ -113,7 +113,9 @@ TASK_DEFINITION
 
   # Modo de red para Fargate
   network_mode             = "awsvpc"
+  #cambiar esto segun ec2 o fargate
   requires_compatibilities = ["FARGATE"]
+  #requires_compatibilities = ["EC2"]
 
   # Recursos a nivel de la tarea
   cpu    = "512"
@@ -154,7 +156,9 @@ resource "aws_ecs_task_definition" "apache_tarea" {
 
   # Modo de red para Fargate
   network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
+  #cambiar esto segun ec2 o fargate
+  #requires_compatibilities = ["FARGATE"]
+  requires_compatibilities = ["EC2"]
 
   # Recursos a nivel de la tarea
   cpu    = "512"
@@ -213,7 +217,10 @@ resource "aws_ecs_service" "apache_service" {
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.apache_tarea.arn
   desired_count   = 1
-  launch_type     = "FARGATE"
+
+  #para lanzarlo o en fargate o en ec2
+  #launch_type     = "FARGATE"
+  launch_type     = "EC2"
 
   network_configuration {
     subnets          = [aws_subnet.subred-publica.id]
@@ -228,7 +235,10 @@ resource "aws_ecs_service" "apache_service" {
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.jsonServer_tarea.arn
   desired_count   = 1
+
+  #para lanzarlo o en fargate o en ec2
   launch_type     = "FARGATE"
+  #launch_type     = "EC2"
 
   network_configuration {
     subnets          = [aws_subnet.subred-publica.id]
