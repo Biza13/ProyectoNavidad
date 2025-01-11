@@ -19,6 +19,7 @@ jobs:
       bucket_nombre: ${{ steps.capturar_bucket.outputs.bucket_nombre }}
       ecr_repository_uri_url: ${{ steps.capturar_ecr_uri_url.outputs.ecr_repository_uri_url }}
       ecr_nombre_repositorio: ${{ steps.capturar_ecr_nombre.outputs.ecr_nombre_repositorio }}
+      instance_public_ip: ${{ steps.capturar_ip_ec2.outputs.instance_public_ip }}
       
     steps:
       # Este paso copia lo que hay en la rama main en la máquina virtual de Ubuntu
@@ -69,7 +70,12 @@ jobs:
       - name: Capturar nombre del repositorio ECR
         id: capturar_ecr_nombre
         run: echo "ecr_nombre_repositorio=$(terraform output -raw ecr_nombre_repositorio)" >> "$GITHUB_OUTPUT"
-        working-directory: ./ArchivosTf     
+        working-directory: ./ArchivosTf 
+
+      - name: Capturar ip de la EC2
+        id: capturar_ip_ec2
+        run: echo "instance_public_ip=$(terraform output -raw instance_public_ip)" >> "$GITHUB_OUTPUT"
+        working-directory: ./ArchivosTf   
 
       #crear artefactos con el nombre del bucket y con el nombre del repositorio
       - name: Crear archivo con el nombre del bucket
@@ -90,3 +96,13 @@ jobs:
         with:
           name: nombre ecr artefacto
           path: ./ecr_name.txt
+
+  crear-contenedor:
+    runs-on: ubuntu-latest
+    needs: despliegue
+    steps:
+      - name: entrar en la instancia y logearme en aws
+        run: |
+          ssh -i C:\Users\serra\.ssh\deployer-key ubuntu@${{ steps.capturar_ip_ec2.outputs.instance_public_ip }}
+          docker run -d --name apache-container -p 443:443 -p 80:80 ${{ steps.capturar_ecr_uri_url.outputs.ecr_repository_uri_url }}:img-apachenodenpm
+        
