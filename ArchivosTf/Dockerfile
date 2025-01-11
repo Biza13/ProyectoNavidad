@@ -23,9 +23,9 @@ COPY ./index.html /var/www/html
 COPY ./Pagina /var/www/html/Pagina
 
 # Copiar los certificados al contenedor
-COPY ssl_files/certificate.crt /etc/ssl/certs/
-COPY ssl_files/private.key /etc/ssl/private/
-COPY ssl_files/ca_bundle.crt /etc/ssl/certs/
+COPY certificado/certificate.crt /etc/ssl/certs/
+COPY certificado/private.key /etc/ssl/private/
+COPY certificado/ca_bundle.crt /etc/ssl/certs/
 
 # Configuración para Apache (habilitar SSL)
 RUN a2enmod ssl && \
