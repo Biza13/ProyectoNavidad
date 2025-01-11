@@ -23,11 +23,6 @@ variable "cidrSubredPrivada"{
     type = string
 }
 
-variable "ecs_cluster_nombre"{
-    description = "Nombre del clustes ecs"
-    type = string
-}
-
 variable "s3"{
   description = "Nombre del bucket s3"
   type = string
