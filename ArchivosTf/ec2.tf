@@ -31,5 +31,5 @@ resource "aws_instance" "instancia" {
     Name = "instancia"
   }
 
-  user_data = file("instalarDocker.sh")
+  user_data = file("instalar-docker.sh")
 }
