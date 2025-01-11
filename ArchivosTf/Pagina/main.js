@@ -27,9 +27,8 @@ function creaCarta(objeto){
     nodoDom.className = "contenedora__articulo"
 
     //creamos la imagen y la metemos en el articulo
-    let img = document.createElement("img");
+    let img = crearElemento(nodoDom, "img");
     img.src = objeto.image;
-    nodoDom.appendChild(img);
 
     //Esto es porque hay imagenes que no funcionan, entonces en caso de error mostrare otra imagen
     img.onerror = () => {
@@ -37,25 +36,13 @@ function creaCarta(objeto){
     };
 
     //creamos el div que contendra la información y lo metemos en el articulo
-    let div = document.createElement("div");
-    nodoDom.appendChild(div);
+    let div = crearElemento(nodoDom, "div");
 
     //cremos todos los p con la información u lo metemos en el div
-    let pNom = document.createElement("p");
-    pNom.textContent = objeto.name;
-    div.appendChild(pNom);
-
-    let pPrec = document.createElement("p");
-    pPrec.textContent = "$ " + objeto.price;
-    div.appendChild(pPrec);
-
-    let pAve = document.createElement("p");
-    pAve.textContent = "Media: " + objeto.average;
-    div.appendChild(pAve);
-
-    let pRev = document.createElement("p");
-    pRev.textContent = " Reviews: " + objeto.reviews;
-    div.appendChild(pRev);
+    crearElemento(div, "p", "","", objeto.name);
+    crearElemento(div, "p", "","", objeto.price);
+    crearElemento(div, "p", "","", "Media: " + objeto.average);
+    crearElemento(div, "p", "","", "Reviews: " + objeto.reviews);
 
     return nodoDom;
 
@@ -92,14 +79,7 @@ function creaCartas(arr){
             //limpiar seccion de carrito
             limpiarSection(document.querySelector(".cervezas__carrito"));
 
-            document.querySelector(".cervezas__mensaje").innerHTML = "Artículo añadido al carrito";
-            cambiarEstilo(document.querySelector(".cervezas__mensaje"), 1);
-
-            arrCarrito.push(elemento);
-
-            setTimeout(() => {
-                cambiarEstilo(document.querySelector(".cervezas__mensaje"), 0)
-            }, 800);
+            anadirAlCarro (arrCarrito, elemento);
 
         });
 
@@ -139,7 +119,7 @@ function ohYeah(){
  * @param {Number} cant cantidad por la que filtrar
  * @returns {Array} devuelve un array con los objetos filtrados
  */
-function filtro (arr, filtrar, operando, cant){
+function filtro (arr, filtrar, operador, cant){
     
     let resultadoBusqueda = [];
     /**
@@ -148,7 +128,7 @@ function filtro (arr, filtrar, operando, cant){
      * para poner una variable como propiedad de un objeto usamos los corchetes
      */
     arr.forEach(element => {
-        switch (operando){
+        switch (operador){
             case ">":
                 if (element[filtrar] > cant){
                     resultadoBusqueda.push(element);
@@ -191,7 +171,7 @@ function modApiData(arr) {
         //mas el average y las reviews
         //en definitiva he cambiado la estructura del objeto para quitar el array que habia dentro del objeto
         return { ...rest, average: +average.toFixed(3), reviews, price: +elemento.price.slice(1) }
-        //a la key de average le un toFixed para redondear a 3 decimales
+        //a la key de average le pongo un toFixed para redondear a 3 decimales
         //y a la key de price le quito el simbolo del dolar con el slice(1)
         //el + es un parseInt es decir lo parsea a número
 
@@ -207,97 +187,109 @@ function modApiData(arr) {
  */
 function creaTabla (arr){
 
-    let boton = document.createElement("button");
-    boton.textContent = "Borrar carrito";
-    boton.id = "borrarCarrito";
-    boton.className = "borrarCarrito";
-    document.querySelector(".cervezas__carrito").appendChild(boton);
+    //Crear boton de eliminar carrito
+    crearElemento(document.querySelector(".cervezas__carrito"), "button", "borrarCarrito", "borrarCarrito", "Borrar carrito")
 
     let tabla = document.createElement("table");
-    let caption = document.createElement("caption");
-    caption.textContent = "Carrito"
-    tabla.appendChild(caption);
+    tabla.className = "cervezas__carrito__tabla";
+    crearElemento(tabla, "caption", "cervezas__carrito__caption", "cervezas__carrito__caption", "Carrito");
 
     //fila de información
-    let filaInfo = document.createElement("tr");
-    tabla.appendChild(filaInfo);
-    tabla.className = "cervezas__carrito__tabla";
+    let filaInfo = crearElemento(tabla, "tr");
 
     //columnas de información
-    let tdCant = document.createElement("th");
-    tdCant.textContent = "Cantidad"
-    filaInfo.appendChild(tdCant);
-
-    let tdTit = document.createElement("th");
-    tdTit.textContent = "Nombre"
-    filaInfo.appendChild(tdTit);
-
-    let tdPrec = document.createElement("th");
-    tdPrec.textContent = "Precio"
-    filaInfo.appendChild(tdPrec);
+    crearElemento(filaInfo, "th", "thCantidad", "thCantidad", "Cantidad");
+    crearElemento(filaInfo, "th", "thNombre", "thNombre", "Nombre");
+    crearElemento(filaInfo, "th", "thPrecio", "thPrecio", "Precio");
 
     arr.forEach(element => {
-        let fila = document.createElement("tr");
-        tabla.appendChild(fila);
+        let fila = crearElemento(tabla, "tr");
 
-        let tdCant = document.createElement("td");
-        tdCant.textContent = element.cantidad;
-        fila.appendChild(tdCant);
+        crearElemento(fila, "td", "celda", "celda", element.cantidad);
+        crearElemento(fila, "td", "celda", "celda", element.name);
+        crearElemento(fila, "td", "celda", "celda", element.price);
 
-        let tdNom = document.createElement("td");
-        tdNom.textContent = element.name;
-        fila.appendChild(tdNom)
+        //boton borrar
+        let tdBorrar = crearElemento(fila, "td");
+        crearElemento(tdBorrar, "button", "borrarUnoCarrito", "borrarUnoCarrito", "Borrar uno");
 
-        let tdPric = document.createElement("td");
-        tdPric.textContent = "$" + element.price;
-        fila.appendChild(tdPric);
+        tdBorrar.addEventListener("click", () => {
+            eliminarUnoDelCarrito(arr, element);
+        });
+
     });
     return tabla
 
 }
 
+function eliminarUnoDelCarrito (array, elemento){
+
+    if (elemento.cantidad > 1){
+        //si el elemento tiene mas de 1 en cantidad, le resto uno
+        elemento.cantidad--;
+    }else{
+        //cojo el indice del elemento en el array
+        let indiceElemeto = array.findIndex(item => item.id === elemento.id);
+        //lo saco del array con el splice donde el primer elemento es el indice y el segundo cuantos elementos quiero eliminar
+        array.splice(indiceElemeto, 1);
+    }
+
+    //actualizar el local storage el stringify convierte el objeto a una cadena de texto con formato json
+    localStorage.setItem('carrito', JSON.stringify(array));
+
+    //limpiar la sección y actualizar la tabla
+    limpiarSection(document.querySelector(".cervezas__carrito")); 
+    return array;
+}
+
 /**
- * Función que recibe un array y va a crearle una propiedad nueva cada objeto con la cantidad de veces que esta el objeto en el array
- * @param {Array} carrito 
- * @returns {Array} carritoModificado devuelve el array modificado con la propiedad cantidad
+ * Función para crear un nodo y ponerlo dentro de otro con un id y un textContent
+ * @param {node} elementoPardre Elemento al que hacerle el appendChild
+ * @param {string} elementoACrear Elemento que quieres crear
+ * @param {string} ident id que le quieres dar al nodo
+ * @param {string} clase clase que se le quiere dar al nodo
+ * @param {string} contenido Contenido que quieres que tenga
+ * @returns {Node} Devuelve un nodo de dom
  */
-function contarRepetidos(carrito) {
+function crearElemento(elementoPardre, elementoACrear, ident="", clase="", contenido=""){
 
-    let carritoModificado = [];
+    let nodo = document.createElement(elementoACrear);
+    nodo.textContent = contenido;
+    nodo.id = ident;
+    nodo.className = clase
+    elementoPardre.appendChild(nodo);
+    return nodo;
 
-    carrito.forEach(element => {
-        //con find verificamos si esta o no el elemento en el array de carrito modificado
-        const productoExistente = carritoModificado.find(cervezaMod => cervezaMod.id === element.id);
+}  
 
-        if (productoExistente) {
-            //si existe, incrementamos la propiedad cantidad que creamos abajo cuando es la primera vez que lo metemos en el array
-            productoExistente.cantidad++;
-        } else {
-            //si no existe, desestructuramos el elemento, le añadimos la propiedad cantidad con el valor de 1 y lo añadimos al array
-            carritoModificado.push({ ...element, cantidad: 1 });
-        }
-    });
-    return carritoModificado;
+/**
+ * Función para añadir elementos al carrito, que tambien guarda el carrito en el local storage
+ * @param {array} arrCarrito 
+ * @param {object} elemento 
+ */
+function anadirAlCarro (arrCarrito, elemento){
 
-}    
+    document.querySelector(".cervezas__mensaje").innerHTML = "Artículo añadido al carrito";
+    cambiarEstilo(document.querySelector(".cervezas__mensaje"), 1);
 
-//Funcion para cargar las cervezas con el scroll infinito
-function cargarCervezas (tipo){
+    //con find verificamos si esta o no el elemento en el array de carrito modificado
+    let cerv = arrCarrito.find(cerveza => cerveza.id === elemento.id)
 
-    //evita que se hagan multiples llamadas a la api, es decir que no se hara la llamada a la api
-    //hasta que no termine de cargar la anterior
-    if (estaCargando) return;
+    if (cerv){
+        //si existe, incrementamos la propiedad cantidad que creamos abajo cuando es la primera vez que lo metemos en el array
+        cerv.cantidad++;
+    }else{
+        //si no existe, desestructuramos el elemento, le añadimos la propiedad cantidad con el valor de 1 y lo añadimos al array
+        arrCarrito.push({ ...elemento, cantidad: 1 });
+    }
 
-    //si no es true, la iguale a true y hago la llamada
-    estaCargando = true;
-    document.querySelector(".cargando").style.display.block;
+    //arrCarrito.push(elemento);
 
-    //con la pagina actual que la primera vez sera la 1
-    getFetch(tipo, paginaActual)
-    .then((datos) => {
-        const modData = modApiData(datos);
-        creaCartas(modData);
-    });
+    localStorage.setItem('carrito', JSON.stringify(arrCarrito));
+
+    setTimeout(() => {
+        cambiarEstilo(document.querySelector(".cervezas__mensaje"), 0)
+    }, 800);
 
 }
 
@@ -322,10 +314,6 @@ let aStouts = document.querySelector("body main nav ul li:last-of-type a");
 
 //crear un array que contendra todos los elementos del carrito
 let arrCarrito = [];
-
-//variables para el manejo del scroll infinito la pagina actual que empieza en la primera y la bandera
-let paginaActual = 1;
-let estaCargando = false;
 
 /*--------------------FIN MANEJO--------------------*/
 
@@ -396,21 +384,27 @@ document.querySelector("#carrito").addEventListener("click", () => {
 
     let section = document.querySelector(".cervezas__carrito");
 
-    //modificar el array de carrito para que diga la cantidad de veces que un elemento esta en el carrito
-    let carritoConCantidades = contarRepetidos(arrCarrito);
-    let tabla = creaTabla(carritoConCantidades, carritoConCantidades.length)
+    // Esto es una especie de operador ternario que si el primero es true devolvera el primero, sino ( || ), esto que es el or, devolvera en este caso un array vacio( [] )
+    //Aqui cojo del local storage (especie de cookies) el carrito en caso de que lo haya, sino hay nada en el local storage sera un array vacio
+    //el parse al contrario que el stringify convierte la cadena de texto en formato json en un objeto js
+    arrCarrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+    let tabla = creaTabla(arrCarrito);
     section.appendChild(tabla);
 
-    //borrar el carrito
+    //Listener para borrar el carrito
     document.querySelector("#borrarCarrito").addEventListener("click", () => {
 
-    arrCarrito = [];
-    section.textContent = "";
+        //si hay el el local storage un carrito guardado, lo borramos
+        localStorage.removeItem('carrito');
+
+        //si no hay nada en el local storage pero queremos borrar el carrito pues ponemos el array vacia
+        //carritoConCantidades = [];
+        arrCarrito = [];
+        section.textContent = "";
 
     });
 
 });
 
 /*--------------------FIN EVENTOS--------------------*/
-
-/*---MAS COSAS--- QUE LUEGO HAY QUE ORGANIZAR---*/

@@ -539,12 +539,20 @@ nav ul li:hover .stouts{
     box-shadow: 0 0 8px black inset;
 }
 
+#borrarUnoCarrito{
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: red;
+}
+
 .cargando{
     display: none;
     text-align: center;
 }
 
 /*--------------------Responsive--------------------*/
+
 /*--------------------tablet--------------------*/
 
 @media (max-width: 1024px){
@@ -658,6 +666,10 @@ nav ul li:hover .stouts{
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 20px;
+    }
+
+    .cervezas__carrito{
+        width: 100%;
     }
     /*fin pagina cervezas*/
 }
@@ -796,6 +808,11 @@ nav ul li:hover .stouts{
     #carrito{
         position: static;
         width: 20%;
+    }
+
+    .cervezas__carrito{
+        width: 100%;
+        padding: 0 20px;
     }
 
     #contenedora{

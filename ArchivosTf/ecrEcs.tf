@@ -101,7 +101,7 @@ data "aws_iam_role" "labrole" {
 TASK_DEFINITION
 } */
 
-resource "aws_ecs_task_definition" "jsonServer_tarea" {
+/* resource "aws_ecs_task_definition" "jsonServer_tarea" {
 
   depends_on = [null_resource.crear-y-subir-imagenes]
 
@@ -140,7 +140,7 @@ resource "aws_ecs_task_definition" "jsonServer_tarea" {
     }
   ]
 TASK_DEFINITION
-}
+} */
 
 resource "aws_ecs_task_definition" "apache_tarea" {
 
@@ -223,7 +223,7 @@ resource "aws_ecs_service" "apache_service" {
 }
 
 # Servicio para JSON Server
-resource "aws_ecs_service" "json_service" {
+/* resource "aws_ecs_service" "json_service" {
   name            = "json-server-service"
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.jsonServer_tarea.arn
@@ -235,6 +235,6 @@ resource "aws_ecs_service" "json_service" {
     security_groups  = [aws_security_group.security.id]
     assign_public_ip = false  # No es necesario asignar IP pública si solo es accesible internamente
   }
-}
+} */
 
 #--------------------FIN SERVICIOS--------------------
