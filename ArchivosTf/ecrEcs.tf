@@ -142,6 +142,11 @@ TASK_DEFINITION
     }
   ]
 TASK_DEFINITION
+  tags = {
+    "name" = "tarea-json"
+    "Environment" = "Production"
+    "Project"     = "Navidad"
+  }
 } */
 
 resource "aws_ecs_task_definition" "apache_tarea" {
@@ -190,7 +195,11 @@ resource "aws_ecs_task_definition" "apache_tarea" {
     }
   ]
 TASK_DEFINITION
-
+  tags = {
+    "name" = "tarea-apache"
+    "Environment" = "Production"
+    "Project"     = "Navidad"
+  }
 }
 
 #crear el cluster
@@ -207,12 +216,15 @@ resource "aws_ecs_cluster" "cluster" {
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.apache_tarea.arn
   desired_count   = 1
-  launch_type     = "FARGATE"
+  #para lanzarlo o en fargate o en ec2
+  #launch_type     = "FARGATE"
+  launch_type     = "EC2"
 
   network_configuration {
     subnets          = [aws_subnet.subred-publica.id]       #ponemos el servicio de la pagina en la subred publica
     security_groups  = [aws_security_group.security.id] #ponemos el grupo de seguridad de las ecs que no permiten entrada desde internet
-    assign_public_ip = true                                #para que asigne una ip publica
+    #si es en ec2 comentar la linea de la ip
+    #assign_public_ip = true                                #para que asigne una ip publica
   }
 } */
 
@@ -230,7 +242,14 @@ resource "aws_ecs_service" "apache_service" {
   network_configuration {
     subnets          = [aws_subnet.subred-publica.id]
     security_groups  = [aws_security_group.security.id]
-    assign_public_ip = true
+    #si es en ec2 comentar la linea de la ip
+    #assign_public_ip = true
+  }
+
+  tags = {
+    "name" = "servicio-apache"
+    "Environment" = "Production"
+    "Project"     = "Navidad"
   }
 }
 
@@ -249,6 +268,12 @@ resource "aws_ecs_service" "apache_service" {
     subnets          = [aws_subnet.subred-publica.id]
     security_groups  = [aws_security_group.security.id]
     assign_public_ip = false  # No es necesario asignar IP pública si solo es accesible internamente
+  }
+
+  tags = {
+    "name" = "servicio-json"
+    "Environment" = "Production"
+    "Project"     = "Navidad"
   }
 } */
 
