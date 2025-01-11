@@ -180,6 +180,11 @@ resource "aws_ecs_task_definition" "apache_tarea" {
           "containerPort": 80,
           "hostPort": 80,
           "protocol": "tcp"
+        },
+        {
+          "containerPort": 443,
+          "hostPort": 443, 
+          "protocol": "tcp"
         }
       ]
     }
