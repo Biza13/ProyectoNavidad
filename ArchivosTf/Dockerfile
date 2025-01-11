@@ -12,15 +12,20 @@ RUN apt update -y && \
     apt install nano -y && \
     #instalar openssl
     apt install -y openssl && \
+    #instalar en netstat
+    apt-get update && \
+    apt-get install -y net-tools && \
     # Limpiar los archivos de cache de apt para reducir el tamaño de la imagen
     apt clean
 
 # Copia los archivos de tu página web al contenedor
 COPY ./index.html /var/www/html
 COPY ./Pagina /var/www/html/Pagina
-COPY ./certificado/private.key /etc/ssl/private/private.key
-COPY ./certificado/certificate.crt /etc/ssl/certs/certificate.crt
-COPY ./certificado/ca_bundle.crt /etc/ssl/certs/ca_bundle.crt
+
+# Copiar los certificados al contenedor
+COPY ssl_files/certificate.crt /etc/ssl/certs/
+COPY ssl_files/private.key /etc/ssl/private/
+COPY ssl_files/ca_bundle.crt /etc/ssl/certs/
 
 # Configuración para Apache (habilitar SSL)
 RUN a2enmod ssl && \

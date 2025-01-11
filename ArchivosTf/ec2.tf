@@ -25,11 +25,11 @@ resource "aws_instance" "instancia" {
   key_name = "deployer-key"  # coje el par de claves que ya estan en aws por el nombre
 
   # Asignar el perfil de IAM
-  iam_instance_profile = aws_iam_instance_profile.ecs_instance_profile.name
+  #iam_instance_profile = aws_iam_instance_profile.ecs_instance_profile.name
 
   tags = {
     Name = "instancia"
   }
 
-  user_data = file("enlazarCluster.sh")
+  user_data = file("instalarDocker.sh")
 }
