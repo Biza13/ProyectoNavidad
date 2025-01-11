@@ -112,6 +112,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: "us-east-1" 
+
+      - name: Verificar los outputs del job de despliegue
+        run: |
+          echo "instance_public_ip=${{ needs.despliegue.outputs.instance_public_ip }}"
+          echo "ecr_repository_uri_url=${{ needs.despliegue.outputs.ecr_repository_uri_url }}"
     
       - name: Crear archivo private key
         run: |
