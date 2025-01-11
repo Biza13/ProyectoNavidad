@@ -34,7 +34,7 @@ data "aws_iam_role" "labrole" {
 }
 
 # Crear el perfil de IAM para la instancia EC2
-resource "aws_iam_instance_profile" "ecs_instance_profile" {
+/* resource "aws_iam_instance_profile" "ecs_instance_profile" {
   name = "ecsInstanceProfile"
   role = data.aws_iam_role.labrole.name
-}
+} */
