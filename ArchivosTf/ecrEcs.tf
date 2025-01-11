@@ -33,6 +33,12 @@ data "aws_iam_role" "labrole" {
   name = "LabRole"
 }
 
+# Crear el perfil de IAM para la instancia EC2
+resource "aws_iam_instance_profile" "ecs_instance_profile" {
+  name = "ecsInstanceProfile"
+  role = data.aws_iam_role.labrole.name
+}
+
 #definición de la tarea de ecs
 /* resource "aws_ecs_task_definition" "apache_tarea" {
 
