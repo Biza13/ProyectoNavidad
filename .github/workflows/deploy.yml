@@ -110,6 +110,9 @@ jobs:
       - name: entrar en la instancia y logearme en aws
         run: |
           ssh -i deploy_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.despliegue.outputs.instance_public_ip }} << 'EOF'
+            sudo usermod -aG docker ubuntu
+            newgrp docker
+            sudo systemctl restart docker
             docker run -d --name apache-container -p 443:443 -p 80:80 ${{ needs.despliegue.outputs.ecr_repository_uri_url }}:img-apachenodenpm
           EOF
 
