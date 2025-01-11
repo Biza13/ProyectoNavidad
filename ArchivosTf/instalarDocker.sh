@@ -2,8 +2,6 @@
 sudo apt update -y
 sudo apt install docker -y
 sudo apt install -y docker.io
-# Agregar el usuario ubuntu al grupo docker
-sudo usermod -a -G docker ubuntu
 sudo systemctl enable docker
 sudo apt install  git -y
 sudo apt install wget -y
