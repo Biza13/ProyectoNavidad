@@ -43,6 +43,8 @@ RUN a2enmod ssl && \
         CustomLog ${APACHE_LOG_DIR}/access.log combined\n\
     </VirtualHost>' > /etc/apache2/sites-available/default-ssl.conf
 
+RUN apachectl restart    
+
 # Expone el puerto 443 para Apache que es el https
 EXPOSE 443
 
