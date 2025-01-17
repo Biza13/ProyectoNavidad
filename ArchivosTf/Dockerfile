@@ -49,8 +49,9 @@ RUN a2enmod ssl && \
 
 RUN apachectl restart    
 
-# Expone el puerto 443 para Apache que es el https
+# Expone el puerto 443 para Apache que es el https y el 3000 para el json
 EXPOSE 443
+EXPOSE 3000
 
 #lanzamos aqui el apache y el json server a la ruta del json
 CMD ["sh", "-c", "json-server --watch /var/www/html/Pagina/assets/json/db.json --host 0.0.0.0 --port 3000 & apachectl -D FOREGROUND"]
