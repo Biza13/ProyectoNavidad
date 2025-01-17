@@ -77,26 +77,6 @@ jobs:
         run: echo "instance_public_ip=$(terraform output -raw instance_public_ip)" >> "$GITHUB_OUTPUT"
         working-directory: ./ArchivosTf   
 
-      #crear artefactos con el nombre del bucket y con el nombre del repositorio
-      - name: Crear archivo con el nombre del bucket
-        run: echo "${{ steps.capturar_bucket.outputs.bucket_nombre }}" > ./bucket_name.txt
-
-      # Subir los archivos como artefactos
-      - name: Subir artefactos con el nombre del bucket
-        uses: actions/upload-artifact@v4.5.0
-        with:
-          name: nombre bucket artefacto
-          path: ./bucket_name.txt  
-
-      - name: Crear archivo con el nombre del repositorio ECR
-        run: echo "${{ steps.capturar_ecr_nombre.outputs.ecr_nombre_repositorio }}" > ./ecr_name.txt  
-
-      - name: Subir artefactos con el nombre del repositorio ECR
-        uses: actions/upload-artifact@v4.5.0
-        with:
-          name: nombre ecr artefacto
-          path: ./ecr_name.txt
-
   crear-contenedor:
     runs-on: ubuntu-latest
     needs: despliegue
