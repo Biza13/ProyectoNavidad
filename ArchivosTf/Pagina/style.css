@@ -380,6 +380,19 @@ nav ul li:hover .stouts{
     left: 35%;
 }
 
+nav ul li:hover .salir{
+    color: black;
+    position: absolute;
+    z-index: 5;
+    left: 35%;
+}
+
+nav ul .carritoNav{
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
 /*----------ESTILOS DE LA SECTION CONTENEDORA página cervezas----------*/
 .cervezas{
     font-family: Arial, Helvetica, sans-serif;

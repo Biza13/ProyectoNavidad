@@ -38,7 +38,7 @@ function creaCarta(objeto){
     //creamos el div que contendra la información y lo metemos en el articulo
     let div = crearElemento(nodoDom, "div");
 
-    //cremos todos los p con la información u lo metemos en el div
+    //cremos todos los p con la información y lo metemos en el div
     crearElemento(div, "p", "","", objeto.name);
     crearElemento(div, "p", "","", objeto.price);
     crearElemento(div, "p", "","", "Media: " + objeto.average);
@@ -80,6 +80,9 @@ function creaCartas(arr){
             limpiarSection(document.querySelector(".cervezas__carrito"));
 
             anadirAlCarro (arrCarrito, elemento);
+
+            //actualizarelementos del carrito
+            contarElementosCarrito(arrCarrito);
 
         });
 
@@ -239,6 +242,10 @@ function eliminarUnoDelCarrito (array, elemento){
 
     //limpiar la sección y actualizar la tabla
     limpiarSection(document.querySelector(".cervezas__carrito")); 
+
+    //actualizarelementos del carrito
+    contarElementosCarrito(array);
+
     return array;
 }
 
@@ -293,6 +300,20 @@ function anadirAlCarro (arrCarrito, elemento){
 
 }
 
+function logout (){
+    location.href = "../index.html"
+}
+
+function contarElementosCarrito (array){
+
+    let total = 0;
+    array.forEach(element => {
+        total = total + element.cantidad;
+    });
+    let p = document.querySelector(".ElementosCarrito");
+    p.textContent = ": " + total;
+}
+
 /*--------------------FIN FUNCIONES--------------------*/
 
 /*--------------------MANEJO--------------------*/
@@ -309,8 +330,8 @@ main.appendChild(section);
 let fragmento = document.createDocumentFragment();
 
 //coger las a para añadirles los listeners
-let aAle = document.querySelector("body main nav ul li:first-of-type a");
-let aStouts = document.querySelector("body main nav ul li:last-of-type a");
+let aAle = document.querySelector(".ale");
+let aStouts = document.querySelector(".stouts");
 
 //crear un array que contendra todos los elementos del carrito
 let arrCarrito = [];
@@ -403,8 +424,15 @@ document.querySelector("#carrito").addEventListener("click", () => {
         arrCarrito = [];
         section.textContent = "";
 
+        let elementosCarrito = document.querySelector(".ElementosCarrito");
+        elementosCarrito.textContent = ": 0"
+
     });
 
+});
+
+document.querySelector(".salir").addEventListener("click", () => {
+    logout();
 });
 
 /*--------------------FIN EVENTOS--------------------*/

@@ -8,6 +8,8 @@ RUN apt update -y && \
     apt install -y nodejs && \
     # Instalar npm
     apt install -y npm && \
+    # Instalar json-server
+    npm install -g json-server && \
     # Instalar nano
     apt install nano -y && \
     #instalar openssl
@@ -26,6 +28,8 @@ COPY ./Pagina /var/www/html/Pagina
 COPY certificado/certificate.crt /etc/ssl/certs/
 COPY certificado/private.key /etc/ssl/private/
 COPY certificado/ca_bundle.crt /etc/ssl/certs/
+
+# Esto (a2ensite) es para habilitar el archivo default-ssl.conf, aunque por defecto viene habilitado
 
 # Configuración para Apache (habilitar SSL)
 RUN a2enmod ssl && \
@@ -48,4 +52,5 @@ RUN apachectl restart
 # Expone el puerto 443 para Apache que es el https
 EXPOSE 443
 
-CMD ["apachectl", "-D", "FOREGROUND"]
+#lanzamos aqui el apache y el json server a la ruta del json
+CMD ["sh", "-c", "json-server --watch /var/www/html/Pagina/assets/json/db.json --host 0.0.0.0 --port 3000 & apachectl -D FOREGROUND"]
