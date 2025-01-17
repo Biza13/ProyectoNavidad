@@ -15,3 +15,8 @@ output "instance_public_ip" {
   description = "IP publica de instancia EC2"
   value = aws_instance.instancia.public_ip
 }
+
+/* output "elastic_ip" {
+  value = aws_eip.ip-elastica.public_ip
+  description = "La IP Elástica asociada a la instancia EC2"
+} */

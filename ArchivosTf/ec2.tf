@@ -33,3 +33,12 @@ resource "aws_instance" "instancia" {
 
   user_data = file("instalar-docker.sh")
 }
+
+/* resource "aws_eip" "ip-elastica" {
+  instance = aws_instance.instancia.id
+
+  #para que no se destruya con el terraform destroy
+  lifecycle {
+    prevent_destroy = true
+  }
+} */
