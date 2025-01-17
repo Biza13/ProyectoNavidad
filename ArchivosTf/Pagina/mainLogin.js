@@ -6,7 +6,7 @@
  */
 function getFetchUsuarios(){
 
-    return fetch('http://localhost:3000/Usuarios')
+    return fetch('https://begona.work.gd/Usuarios')
     .then((result) => result.json())
     .catch((error) => {
         console.error("Error al realizar la solicitud: ", error);

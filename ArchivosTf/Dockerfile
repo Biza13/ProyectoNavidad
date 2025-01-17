@@ -5,6 +5,7 @@ FROM ubuntu:latest
 RUN apt update -y && \
     apt install -y apache2 && \
     # Instalar Node.js
+    curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
     apt install -y nodejs && \
     # Instalar npm
     apt install -y npm && \
@@ -36,8 +37,10 @@ COPY ./start-json-server.js /usr/local/bin/start-json-server.js
 
 # Configuración para Apache (habilitar SSL)
 RUN a2enmod ssl && \
+    a2enmod proxy && \
+    a2enmod proxy_http && \
     a2ensite default-ssl.conf && \
-    # Configuración del certificado SSL
+    # Configuración del certificado SSL en Apache y proxis
     echo '<VirtualHost *:443>\n\
         ServerAdmin webmaster@begona.work.gd\n\
         ServerName begona.work.gd\n\
@@ -48,6 +51,9 @@ RUN a2enmod ssl && \
         SSLCertificateChainFile /etc/ssl/certs/ca_bundle.crt\n\
         ErrorLog ${APACHE_LOG_DIR}/error.log\n\
         CustomLog ${APACHE_LOG_DIR}/access.log combined\n\
+        # Proxy para redirigir a json-server\n\
+        ProxyPass /Usuarios http://localhost:3000/Usuarios\n\
+        ProxyPassReverse /Usuarios http://localhost:3000/Usuarios\n\
     </VirtualHost>' > /etc/apache2/sites-available/default-ssl.conf
 
 # Instalar el paquete CORS y permitir solicitudes desde otros orígenes
@@ -60,4 +66,4 @@ EXPOSE 443
 EXPOSE 3000
 
 #lanzamos aqui el apache y el JSON Server con el middleware CORS habilitado
-CMD ["sh", "-c", "node /usr/local/bin/start-json-server.js & apachectl -D FOREGROUND"]
+CMD ["sh", "-c", "npx json-server /var/www/html/Pagina/assets/json/usuarios.json --watch & apachectl -D FOREGROUND"]
