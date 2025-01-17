@@ -30,7 +30,7 @@ COPY certificado/private.key /etc/ssl/private/
 COPY certificado/ca_bundle.crt /etc/ssl/certs/
 
 # Copiar el archivo de configuración del json-server con CORS habilitado
-COPY ./start-json-server.js /usr/local/bin/start-json-server.js
+COPY ./Pagina/start-json-server.js /usr/local/bin/start-json-server.js
 
 #copiar el default a su carpeta
 COPY ./default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
