@@ -11,9 +11,3 @@ sudo curl -L https://github.com/docker/compose/releases/download/1.27.0/docker-c
 sudo chmod +x /usr/local/bin/docker-compose
 
 sudo apt install awscli -y
-
-sudo usermod -aG docker ubuntu
-# Aplicar los cambios para el grupo docker
-newgrp docker
-
-sudo systemctl restart docker
