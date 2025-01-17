@@ -22,42 +22,20 @@ jobs:
         aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
         aws-region: "us-east-1"
 
-    #descargar artefactos nombres ecr y s3
-    - name: Descargar artefactos de nombre del bucket y repositorio ECR
-      uses: actions/download-artifact@v4.1.8
-      with:
-        name: nombre bucket artefacto
-        
-    - name: Descargar artefactos de nombre del repositorio ECR
-      uses: actions/download-artifact@v4.1.8
-      with:
-        name: nombre ecr artefacto   
-
-    #leer los archivos y poner el contenido en una variable de entorno
-    - name: Leer nombre del bucket desde el artefacto
-      run: |
-        BUCKET_NAME=$(cat ./bucket_name.txt)
-        echo "bucket_name=$BUCKET_NAME" >> $GITHUB_ENV
-
-    - name: Leer nombre del repositorio ECR desde el artefacto
-      run: |
-        ECR_NAME=$(cat ./ecr_name.txt)
-        echo "ecr_name=$ECR_NAME" >> $GITHUB_ENV    
-
     #descargar tfstate del s3
     - name: Descargar tfstate desde el bucket de S3
-      run: aws s3 cp s3://${{ env.bucket_name }}/terraform.tfstate terraform.tfstate --region us-east-1
+      run: aws s3 cp s3://${{ secrets.AWS_S3_BUCKET }}/terraform.tfstate terraform.tfstate --region us-east-1
       working-directory: ./ArchivosTf
 
     #eliminar el tfstate del bucket
     - name: Eliminar los archivos en S3
       run: |
-        aws s3 rm s3://${{ env.bucket_name }} --recursive --region us-east-1
+        aws s3 rm s3://${{ secrets.AWS_S3_BUCKET }} --recursive --region us-east-1
 
     - name: Eliminar imágenes específicas en ECR
       run: |
-       aws ecr batch-delete-image --repository-name ${{ env.ecr_name }} --image-ids imageTag=img-apachenodenpm --region us-east-1
-       aws ecr batch-delete-image --repository-name ${{ env.ecr_name }} --image-ids imageTag=img-jsonserver --region us-east-1
+       aws ecr batch-delete-image --repository-name ${{ secrets.AWS_ECR }} --image-ids imageTag=img-apachenodenpm --region us-east-1
+       aws ecr batch-delete-image --repository-name ${{ secrets.AWS_ECR }} --image-ids imageTag=img-jsonserver --region us-east-1
 
     #iniciar terraform y destruir
     - name: Terraform Init
