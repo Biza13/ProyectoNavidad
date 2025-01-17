@@ -15,3 +15,5 @@ sudo apt install awscli -y
 sudo usermod -aG docker ubuntu
 # Aplicar los cambios para el grupo docker
 newgrp docker
+
+sudo systemctl restart docker
