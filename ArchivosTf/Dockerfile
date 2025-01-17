@@ -4,6 +4,8 @@ FROM ubuntu:latest
 # Actualizar e instalar Apache, Node.js y npm
 RUN apt update -y && \
     apt install -y apache2 && \
+    #instalar curl
+    apt update -y && apt install -y curl && \
     # Instalar Node.js
     curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
     apt install -y nodejs && \
