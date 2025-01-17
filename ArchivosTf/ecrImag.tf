@@ -21,12 +21,15 @@ resource "null_resource" "crear-y-subir-imagenes" {
       docker tag img-apachenodenpm:latest ${aws_ecr_repository.repositorio_ecr.repository_url}:img-apachenodenpm
       docker push ${aws_ecr_repository.repositorio_ecr.repository_url}:img-apachenodenpm
 
-      docker build --no-cache -t img-jsonserver -f ./Dockerfile.json-server .
-      docker tag img-jsonserver:latest ${aws_ecr_repository.repositorio_ecr.repository_url}:img-jsonserver
-      docker push ${aws_ecr_repository.repositorio_ecr.repository_url}:img-jsonserver
+      
     EOT
   }
 }
+
+//esta seria la imagen del dockerfile de json server pero que no la estoy usando
+/* docker build --no-cache -t img-jsonserver -f ./Dockerfile.json-server .
+docker tag img-jsonserver:latest ${aws_ecr_repository.repositorio_ecr.repository_url}:img-jsonserver
+docker push ${aws_ecr_repository.repositorio_ecr.repository_url}:img-jsonserver */
 
 # Referencia al rol IAM existente en mi cuenta de aws que es (LabRole) usando su ARN
 data "aws_iam_role" "labrole" {
