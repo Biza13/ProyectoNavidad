@@ -32,28 +32,16 @@ COPY certificado/ca_bundle.crt /etc/ssl/certs/
 # Copiar el archivo de configuración del json-server con CORS habilitado
 COPY ./start-json-server.js /usr/local/bin/start-json-server.js
 
+#copiar el default a su carpeta
+COPY ./default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
+
 # Esto (a2ensite) es para habilitar el archivo default-ssl.conf, aunque por defecto viene habilitado
 
-# Configuración para Apache (habilitar SSL)
+# habilitar SSL y el proxy
 RUN a2enmod ssl && \
     a2enmod proxy && \
     a2enmod proxy_http && \
-    a2ensite default-ssl.conf && \
-    # Configuración del certificado SSL en Apache y proxis
-    echo '<VirtualHost *:443>\n\
-        ServerAdmin webmaster@begona.work.gd\n\
-        ServerName begona.work.gd\n\
-        DocumentRoot /var/www/html\n\
-        SSLEngine on\n\
-        SSLCertificateFile /etc/ssl/certs/certificate.crt\n\
-        SSLCertificateKeyFile /etc/ssl/private/private.key\n\
-        SSLCertificateChainFile /etc/ssl/certs/ca_bundle.crt\n\
-        ErrorLog ${APACHE_LOG_DIR}/error.log\n\
-        CustomLog ${APACHE_LOG_DIR}/access.log combined\n\
-        # Proxy para redirigir a json-server\n\
-        ProxyPass /Usuarios http://localhost:3000/Usuarios\n\
-        ProxyPassReverse /Usuarios http://localhost:3000/Usuarios\n\
-    </VirtualHost>' > /etc/apache2/sites-available/default-ssl.conf
+    a2ensite default-ssl.conf
 
 # Instalar el paquete CORS y permitir solicitudes desde otros orígenes
 RUN npm install -g cors
