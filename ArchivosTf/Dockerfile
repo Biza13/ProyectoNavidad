@@ -29,6 +29,9 @@ COPY certificado/certificate.crt /etc/ssl/certs/
 COPY certificado/private.key /etc/ssl/private/
 COPY certificado/ca_bundle.crt /etc/ssl/certs/
 
+# Copiar el archivo de configuración del json-server con CORS habilitado
+COPY ./start-json-server.js /usr/local/bin/start-json-server.js
+
 # Esto (a2ensite) es para habilitar el archivo default-ssl.conf, aunque por defecto viene habilitado
 
 # Configuración para Apache (habilitar SSL)
@@ -47,11 +50,14 @@ RUN a2enmod ssl && \
         CustomLog ${APACHE_LOG_DIR}/access.log combined\n\
     </VirtualHost>' > /etc/apache2/sites-available/default-ssl.conf
 
+# Instalar el paquete CORS y permitir solicitudes desde otros orígenes
+RUN npm install -g cors
+
 RUN apachectl restart    
 
 # Expone el puerto 443 para Apache que es el https y el 3000 para el json
 EXPOSE 443
 EXPOSE 3000
 
-#lanzamos aqui el apache y el json server a la ruta del json
-CMD ["sh", "-c", "json-server --watch /var/www/html/Pagina/assets/json/db.json --host 0.0.0.0 --port 3000 & apachectl -D FOREGROUND"]
+#lanzamos aqui el apache y el JSON Server con el middleware CORS habilitado
+CMD ["sh", "-c", "node /usr/local/bin/start-json-server.js & apachectl -D FOREGROUND"]
