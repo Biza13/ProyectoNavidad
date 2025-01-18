@@ -34,15 +34,17 @@ COPY ./Pagina/start-json-server.js /usr/local/bin/start-json-server.js
 
 #copiar los default a su carpeta
 COPY ./default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
-COPY ./default-ssl.conf /etc/apache2/sites-available/000-default.conf
+COPY ./000-default.conf /etc/apache2/sites-available/000-default.conf
+# COPY ./000-default-2.conf /etc/apache2/sites-available/000-default.conf
 
 # Esto (a2ensite) es para habilitar el archivo default-ssl.conf, aunque por defecto viene habilitado
 
-# habilitar SSL y el proxy
+# habilitar SSL y el proxy (modulos)
 RUN a2enmod ssl && \
     a2enmod proxy && \
     a2enmod proxy_http && \
-    a2ensite default-ssl.conf
+    a2ensite default-ssl.conf && \
+    a2enmod rewrite
 
 # Instalar el paquete CORS y permitir solicitudes desde otros orígenes
 RUN npm install -g cors
