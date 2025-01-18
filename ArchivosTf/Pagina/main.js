@@ -346,7 +346,7 @@ aAle.addEventListener("click", () => {
 
     document.querySelector(".cervezas__titulo").innerHTML = "Cervezas Ale";
 
-    getFetch("ale")
+    getFetch("ales")
     .then((datos) => {
         const modData = modApiData(datos);
         creaCartas(modData);
