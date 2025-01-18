@@ -6,6 +6,7 @@
  */
 function getFetchUsuarios(){
 
+    //https://api.sampleapis.com/beers/
     return fetch('https://begona.work.gd/Usuarios')
     .then((result) => result.json())
     .catch((error) => {
