@@ -6,8 +6,9 @@
  * @returns {Promise} Devuelve una PROMESA en forma de array
  */
 function getFetch(tipo, pagina){
-
-    return fetch("https://api.sampleapis.com/beers/" + tipo)
+    
+    //https://api.sampleapis.com/beers/
+    return fetch("https://begona.work.gd/" + tipo)
     .then((result) => result.json())
     .catch((error) => {
         console.error("Error al realizar la solicitud: ", error);
