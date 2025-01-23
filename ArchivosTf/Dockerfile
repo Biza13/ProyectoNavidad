@@ -14,9 +14,6 @@ RUN apt update -y && \
     apt install nano -y && \
     #instalar openssl
     apt install -y openssl && \
-    #instalar en netstat
-    apt-get update && \
-    apt-get install -y net-tools && \
     # Limpiar los archivos de cache de apt para reducir el tamaño de la imagen
     apt clean
 
@@ -56,5 +53,5 @@ EXPOSE 443
 EXPOSE 3000
 EXPOSE 80
 
-#lanzamos aqui el apache y el JSON Server con el middleware CORS habilitado
+#lanzamos aqui el apache y el JSON Server
 CMD ["sh", "-c", "npx json-server /var/www/html/Pagina/assets/json/db.json --watch & apachectl -D FOREGROUND"]
