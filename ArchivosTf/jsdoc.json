@@ -1,7 +1,7 @@
 {
     "plugins": [],
     "source": {
-    "include": ["Pagina"],
+    "include": ["/var/www/html/Pagina"],
     "includePattern": ".+\\.js(doc|x)?$",
     "excludePattern": "(node_modules|docs)"
     },
@@ -11,7 +11,7 @@
     },
     "opts": {
     "recurse": true, 
-    "destination" : "./docs",
+    "destination" : "/var/www/html/docs",
     "template": ""
     }
 }
