@@ -1,0 +1,17 @@
+{
+    "plugins": [],
+    "source": {
+    "include": ["Pagina"],
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "(node_modules|docs)"
+    },
+    "templates": { 
+    "cleverlinks": false,
+    "monospacelinks": false
+    },
+    "opts": {
+    "recurse": true, 
+    "destination" : "./docs",
+    "template": ""
+    }
+}

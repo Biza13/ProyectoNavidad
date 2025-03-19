@@ -21,7 +21,6 @@ resource "null_resource" "crear-y-subir-imagenes" {
       docker tag img-apachenodenpm:latest ${aws_ecr_repository.repositorio_ecr.repository_url}:img-apachenodenpm
       docker push ${aws_ecr_repository.repositorio_ecr.repository_url}:img-apachenodenpm
 
-      
     EOT
   }
 }

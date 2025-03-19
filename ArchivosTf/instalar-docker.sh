@@ -3,6 +3,8 @@ sudo apt update -y
 sudo apt install -y docker.io
 sudo systemctl enable docker
 sudo systemctl start docker
+sudo usermod -aG docker ubuntu
+newgrp docker
 sudo apt install  git -y
 sudo apt install wget -y
 # Descargar Docker Compose

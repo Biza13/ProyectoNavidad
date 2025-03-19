@@ -15,11 +15,15 @@ RUN apt update -y && \
     #instalar openssl
     apt install -y openssl && \
     # Limpiar los archivos de cache de apt para reducir el tamaño de la imagen
-    apt clean
+    apt clean && \
+    #instalar node js
+    curl -o- https://fnm.vercel.app/install | bash && \
+    fnm install 23
 
 # Copia los archivos de tu página web al contenedor
 COPY ./index.html /var/www/html
 COPY ./Pagina /var/www/html/Pagina
+COPY ./jsdoc.json /var/www/html
 
 # Copiar los certificados al contenedor
 COPY certificado/certificate.crt /etc/ssl/certs/
@@ -45,6 +49,11 @@ RUN a2enmod ssl && \
 
 # Instalar el paquete CORS y permitir solicitudes desde otros orígenes
 RUN npm install -g cors
+
+# Instalar jsdoc para generar documentación y ejecutarlo
+RUN npm install -g jsdoc
+RUN sleep 30
+RUN npx jsdoc -c /var/www/html/jsdoc.json
 
 RUN apachectl restart    
 
