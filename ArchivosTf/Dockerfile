@@ -49,8 +49,8 @@ RUN npm install -g cors
 
 # Instalar jsdoc para generar documentación y ejecutarlo
 RUN npm install -g jsdoc
-RUN sleep 30
-RUN npx jsdoc -c /var/www/html/jsdoc.json
+#RUN sleep 30
+#RUN npx jsdoc -c /var/www/html/jsdoc.json
 
 RUN apachectl restart    
 
