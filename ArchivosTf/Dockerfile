@@ -47,10 +47,8 @@ RUN a2enmod ssl && \
 # Instalar el paquete CORS y permitir solicitudes desde otros orígenes
 RUN npm install -g cors
 
-# Instalar jsdoc para generar documentación y ejecutarlo
+# Instalar jsdoc para generar documentación
 RUN npm install -g jsdoc
-#RUN sleep 30
-#RUN npx jsdoc -c /var/www/html/jsdoc.json
 
 RUN apachectl restart    
 
