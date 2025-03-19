@@ -15,10 +15,7 @@ RUN apt update -y && \
     #instalar openssl
     apt install -y openssl && \
     # Limpiar los archivos de cache de apt para reducir el tamaño de la imagen
-    apt clean && \
-    #instalar node js
-    curl -o- https://fnm.vercel.app/install | bash && \
-    fnm install 23
+    apt clean
 
 # Copia los archivos de tu página web al contenedor
 COPY ./index.html /var/www/html
